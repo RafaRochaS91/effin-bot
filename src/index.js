@@ -7,7 +7,7 @@ const website =
   "https://www.saturn.de/de/product/_hama-dust-ex-55-2401071.html";
 
 (async function () {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: false, slowMo: 20 });
   const page = await browser.newPage();
 
   await page.goto("https://www.saturn.de/de/myaccount");
@@ -25,13 +25,15 @@ const website =
   await page.keyboard.type(process.env.SATURN_PASSWORD);
 
   await page.click("#mms-login-form__login-button");
-  await page.waitForResponse((response) => response.ok());
+  await page.waitForSelector("#mms-login-form__login-button", { hidden: true });
 
   await page.goto(website, { waitUntil: "load" });
 
   let isAvailable = false;
   while (!isAvailable) {
-    const addToCartButton = await page.$("#pdp-add-to-cart-button");
+    const addToCartButton = await page.waitForSelector(
+      "#pdp-add-to-cart-button"
+    );
 
     if (addToCartButton) {
       console.log("✅");
@@ -72,6 +74,8 @@ const website =
       await page.click("#submitButton");
 
       console.log("Purchased!");
+
+      await browser.close();
     } else {
       console.log("❌");
       await page.waitForTimeout(10000);
