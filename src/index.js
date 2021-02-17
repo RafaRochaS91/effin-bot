@@ -3,11 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const website =
-  "https://www.saturn.de/de/product/_hama-dust-ex-55-2401071.html";
+const website = process.argv[2];
 
 (async function () {
-  const browser = await puppeteer.launch({ headless: false, slowMo: 20 });
+  const browser = await puppeteer.launch({ headless: false, slowMo: 200 });
   const page = await browser.newPage();
 
   await page.goto("https://www.saturn.de/de/myaccount");
@@ -31,9 +30,7 @@ const website =
 
   let isAvailable = false;
   while (!isAvailable) {
-    const addToCartButton = await page.waitForSelector(
-      "#pdp-add-to-cart-button"
-    );
+    const addToCartButton = await page.$("#pdp-add-to-cart-button");
 
     if (addToCartButton) {
       console.log("✅");
