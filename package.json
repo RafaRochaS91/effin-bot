@@ -1,0 +1,15 @@
+{
+  "name": "effin-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "repository": "https://github.com/RafaRochaS91/effin-bot.git",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "puppeteer": "^7.1.0"
+  }
+}
