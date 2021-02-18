@@ -25,30 +25,23 @@ export async function buyOnSaturn() {
   const wishListPage = "https://www.saturn.de/de/myaccount/wishlist";
   await page.goto(wishListPage, { waitUntil: "load" });
 
-  let isDigitalAvailable = false;
-  let isDiscAvailable = false;
-  while (!isDigitalAvailable && !isDiscAvailable) {
-    const [addToCartDigital, addToCartDisk] = await page.$x(
+  let isAnyItemAvailable = false;
+  while (!isAnyItemAvailable) {
+    const enabledAddToCartButtons = await page.$x(
       "//button[@data-test='a2c-Button' and not(@disabled)]"
     );
 
-    isDigitalAvailable = !!addToCartDigital;
-    isDiscAvailable = !!addToCartDisk;
+    if (enabledAddToCartButtons.length > 0) {
+      console.log(
+        `✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`
+      );
 
-    console.log(`
-    Digital: ${isDigitalAvailable ? "✅" : "❌"}
-    Disc: ${isDiscAvailable ? "✅" : "❌"}
-    `);
+      isAnyItemAvailable = true;
 
-    if (isDigitalAvailable || isDiscAvailable) {
       await page.screenshot({ path: "saturn-available.png", fullPage: true });
 
-      // DIGITAL has the priority
-      if (isDigitalAvailable) {
-        addToCartDigital.click();
-      } else if (isDiscAvailable) {
-        addToCartDisk.click();
-      }
+      // First item has the priority
+      await enabledAddToCartButtons[0].click();
 
       await page.waitForTimeout(300);
 
@@ -56,7 +49,7 @@ export async function buyOnSaturn() {
         waitUntil: "networkidle0",
       });
 
-      await page.screenshot({ path: "saturn-checkout1.png", fullPage: true });
+      await page.waitForTimeout(300);
 
       // Move to Credit Card page
       const [, payButton] = await page.$x(
@@ -65,7 +58,7 @@ export async function buyOnSaturn() {
 
       await payButton.click();
 
-      await page.screenshot({ path: "saturn-checkout2.png", fullPage: true });
+      await page.screenshot({ path: "saturn-checkout.png", fullPage: true });
 
       await page.waitForSelector("#MMSKKNr");
 
@@ -85,6 +78,7 @@ export async function buyOnSaturn() {
 
       console.log("Purchased!");
     } else {
+      console.log(`❌ No items available ❌`);
       await page.waitForTimeout(30000);
       await page.reload({ waitUntil: "load" });
     }
