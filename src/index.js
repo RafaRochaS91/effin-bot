@@ -19,7 +19,7 @@ const version = process.argv[3];
         await buyOnSaturn(isDigital);
         break;
       case SUPPORTED_WEBSITES.MEDIA_MARKT:
-        await buyOnMediamarkt(isDigital);
+        await buyOnMediamarkt();
         break;
       default:
         throw new WebsiteNotSupported(website);
