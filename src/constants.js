@@ -4,10 +4,8 @@ const SUPPORTED_WEBSITES = {
 };
 
 const SUPPORTED_WEBSITE_URLS = {
-    SATURN: 'https://saturn.de',
-    GAMESTOP: 'https://gamestop.de'
-}
-
-module.exports = {
-  SUPPORTED_WEBSITES,
+  SATURN: "https://saturn.de",
+  GAMESTOP: "https://gamestop.de",
 };
+
+export { SUPPORTED_WEBSITES, SUPPORTED_WEBSITE_URLS };
