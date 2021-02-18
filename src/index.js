@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { SUPPORTED_WEBSITES } from "./constants.js";
 import { WebsiteNotSupported } from "./errors/WebsiteNotSupported.js";
 import { buyOnSaturn } from "./saturn/index.js";
+import { buyOnMediamarkt } from "./media-markt/index.js";
 
 dotenv.config();
 
@@ -16,6 +17,9 @@ const version = process.argv[3];
     switch (website) {
       case SUPPORTED_WEBSITES.SATURN:
         await buyOnSaturn(isDigital);
+        break;
+      case SUPPORTED_WEBSITES.MEDIA_MARKT:
+        await buyOnMediamarkt(isDigital);
         break;
       default:
         throw new WebsiteNotSupported(website);
