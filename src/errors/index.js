@@ -1,1 +1,1 @@
-const { WebsiteNotSupported } = require('./WebsiteNotSupported');
+export { WebsiteNotSupported } from "./WebsiteNotSupported";

@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 
-import { SUPPORTED_WEBSITES } from "./constants";
-import { WebsiteNotSupported } from "./errors/WebsiteNotSupported";
+import { SUPPORTED_WEBSITES } from "./constants.js";
+import { WebsiteNotSupported } from "./errors/WebsiteNotSupported.js";
+import { buyOnSaturn } from "./saturn/index.js";
 
 dotenv.config();
 
@@ -10,7 +11,7 @@ const version = process.argv[3];
 
 (async function () {
   try {
-    const isDigital = version === 'digital';
+    const isDigital = version === "digital";
 
     switch (website) {
       case SUPPORTED_WEBSITES.SATURN:
