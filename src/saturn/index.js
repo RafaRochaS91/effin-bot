@@ -79,7 +79,7 @@ export async function buyOnSaturn(isDigital) {
       await browser.close();
     } else {
       console.log("❌");
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(30000);
       await page.reload({ waitUntil: "load" });
     }
   }
