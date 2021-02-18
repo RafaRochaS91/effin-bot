@@ -27,33 +27,26 @@ export async function buyOnMediamarkt() {
   const wishListPage = "https://www.mediamarkt.de/de/myaccount/wishlist";
   await page.goto(wishListPage, { waitUntil: "load" });
 
-  let isDigitalAvailable = false;
-  let isDiscAvailable = false;
-  while (!isDigitalAvailable && !isDiscAvailable) {
-    const [addToCartDigital, addToCartDisk] = await page.$x(
+  let isAnyItemAvailable = false;
+  while (!isAnyItemAvailable) {
+    const enabledAddToCartButtons = await page.$x(
       "//button[@data-test='a2c-Button' and not(@disabled)]"
     );
 
-    isDigitalAvailable = !!addToCartDigital;
-    isDiscAvailable = !!addToCartDisk;
+    if (enabledAddToCartButtons.length > 0) {
+      console.log(
+        `✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`
+      );
 
-    console.log(`
-    Digital: ${isDigitalAvailable ? "✅" : "❌"}
-    Disc: ${isDiscAvailable ? "✅" : "❌"}
-    `);
+      isAnyItemAvailable = true;
 
-    if (isDigitalAvailable || isDiscAvailable) {
       await page.screenshot({
         path: "mediamarkt-available.png",
         fullPage: true,
       });
 
-      // DIGITAL has the priority
-      if (isDigitalAvailable) {
-        addToCartDigital.click();
-      } else if (isDiscAvailable) {
-        addToCartDisk.click();
-      }
+      // First item has the priority
+      await enabledAddToCartButtons[0].click();
 
       await page.waitForTimeout(300);
 
@@ -61,29 +54,26 @@ export async function buyOnMediamarkt() {
         waitUntil: "networkidle0",
       });
 
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(300);
 
       // Select credit card option
       const [creditCardOption] = await page.$x(
         "//span[contains(text(), 'Kreditkarte')]"
       );
-      await creditCardOption.click();
 
-      await page.screenshot({
-        path: "mediamarkt-checkout1.png",
-        fullPage: true,
-      });
+      if (creditCardOption) {
+        await creditCardOption.click();
+        await page.screenshot({
+          path: "mediamarkt-checkout1.png",
+          fullPage: true,
+        });
 
-      // Move to next step (overview)
-      const [nextStep] = await page.$x(
-        "//div[@data-test='checkout-continue-mobile-enabled']/button[contains(text(), 'Weiter')]"
-      );
-      await nextStep.click();
-
-      await page.screenshot({
-        path: "mediamarkt-checkout2.png",
-        fullPage: true,
-      });
+        // Move to next step (overview)
+        const [nextStep] = await page.$x(
+          "//div[@data-test='checkout-continue-mobile-enabled']/button[contains(text(), 'Weiter')]"
+        );
+        await nextStep.click();
+      }
 
       // Move to Credit Card page
       const [, payButton] = await page.$x(
@@ -92,7 +82,7 @@ export async function buyOnMediamarkt() {
       await payButton.click();
 
       await page.screenshot({
-        path: "mediamarkt-checkout3.png",
+        path: "mediamarkt-checkout2.png",
         fullPage: true,
       });
 
@@ -114,6 +104,7 @@ export async function buyOnMediamarkt() {
 
       console.log("Purchased!");
     } else {
+      console.log(`❌ No items available ❌`);
       await page.waitForTimeout(30000);
       await page.reload({ waitUntil: "load" });
     }
