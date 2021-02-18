@@ -8,15 +8,12 @@ import { buyOnMediamarkt } from "./media-markt/index.js";
 dotenv.config();
 
 const website = process.argv[2];
-const version = process.argv[3];
 
 (async function () {
   try {
-    const isDigital = version === "digital";
-
     switch (website) {
       case SUPPORTED_WEBSITES.SATURN:
-        await buyOnSaturn(isDigital);
+        await buyOnSaturn();
         break;
       case SUPPORTED_WEBSITES.MEDIA_MARKT:
         await buyOnMediamarkt();

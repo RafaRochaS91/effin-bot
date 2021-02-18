@@ -43,7 +43,10 @@ export async function buyOnMediamarkt() {
     `);
 
     if (isDigitalAvailable || isDiscAvailable) {
-      await page.screenshot({ path: "available.png", fullPage: true });
+      await page.screenshot({
+        path: "mediamarkt-available.png",
+        fullPage: true,
+      });
 
       // DIGITAL has the priority
       if (isDigitalAvailable) {
@@ -60,15 +63,16 @@ export async function buyOnMediamarkt() {
 
       await page.waitForTimeout(2000);
 
-      await page.screenshot({ path: "checkout1.png", fullPage: true });
-
       // Select credit card option
       const [creditCardOption] = await page.$x(
         "//span[contains(text(), 'Kreditkarte')]"
       );
       await creditCardOption.click();
 
-      await page.screenshot({ path: "checkout2.png", fullPage: true });
+      await page.screenshot({
+        path: "mediamarkt-checkout1.png",
+        fullPage: true,
+      });
 
       // Move to next step (overview)
       const [nextStep] = await page.$x(
@@ -76,7 +80,10 @@ export async function buyOnMediamarkt() {
       );
       await nextStep.click();
 
-      await page.screenshot({ path: "checkout3.png", fullPage: true });
+      await page.screenshot({
+        path: "mediamarkt-checkout2.png",
+        fullPage: true,
+      });
 
       // Move to Credit Card page
       const [, payButton] = await page.$x(
@@ -84,7 +91,10 @@ export async function buyOnMediamarkt() {
       );
       await payButton.click();
 
-      await page.screenshot({ path: "checkout4.png", fullPage: true });
+      await page.screenshot({
+        path: "mediamarkt-checkout3.png",
+        fullPage: true,
+      });
 
       await page.waitForSelector("#MMSKKNr");
 
@@ -103,8 +113,6 @@ export async function buyOnMediamarkt() {
       await page.click("#submitButton");
 
       console.log("Purchased!");
-
-      await browser.close();
     } else {
       await page.waitForTimeout(30000);
       await page.reload({ waitUntil: "load" });
