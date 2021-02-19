@@ -6,8 +6,9 @@
   "repository": "https://github.com/RafaRochaS91/effin-bot.git",
   "license": "MIT",
   "scripts": {
-    "saturn": "node src/index.js saturn",
-    "mediamarkt": "node src/index.js mediamarkt"
+    "amazon": "node src/index.js amazon",
+    "mediamarkt": "node src/index.js mediamarkt",
+    "saturn": "node src/index.js saturn"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

@@ -33,7 +33,7 @@ export async function buyOnSaturn() {
 
     if (enabledAddToCartButtons.length > 0) {
       console.log(
-        `✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`
+        `(SAT) ✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`
       );
 
       isAnyItemAvailable = true;
@@ -78,7 +78,7 @@ export async function buyOnSaturn() {
 
       console.log("Purchased!");
     } else {
-      console.log(`❌ No items available ❌`);
+      console.log(`(SAT) ❌ No items available ❌`);
       await page.waitForTimeout(30000);
       await page.reload({ waitUntil: "load" });
     }

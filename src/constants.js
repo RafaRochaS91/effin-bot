@@ -1,4 +1,5 @@
 const SUPPORTED_WEBSITES = {
+  AMAZON: "amazon",
   SATURN: "saturn",
   MEDIA_MARKT: "mediamarkt",
   GAMESTOP: "gamestop",

@@ -35,7 +35,7 @@ export async function buyOnMediamarkt() {
 
     if (enabledAddToCartButtons.length > 0) {
       console.log(
-        `✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`
+        `(MM) ✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`
       );
 
       isAnyItemAvailable = true;
@@ -104,7 +104,7 @@ export async function buyOnMediamarkt() {
 
       console.log("Purchased!");
     } else {
-      console.log(`❌ No items available ❌`);
+      console.log(`(MM) ❌ No items available ❌`);
       await page.waitForTimeout(30000);
       await page.reload({ waitUntil: "load" });
     }
