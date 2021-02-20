@@ -8,10 +8,14 @@
   "scripts": {
     "amazon": "node src/index.js amazon",
     "mediamarkt": "node src/index.js mediamarkt",
-    "saturn": "node src/index.js saturn"
+    "saturn": "node src/index.js saturn",
+    "saturn:bundle":  "node src/index.js saturn_bundle"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
     "puppeteer": "^7.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }

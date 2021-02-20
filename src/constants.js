@@ -3,6 +3,7 @@ const SUPPORTED_WEBSITES = {
   SATURN: "saturn",
   MEDIA_MARKT: "mediamarkt",
   GAMESTOP: "gamestop",
+  SATURN_BUNDLE: "saturn_bundle"
 };
 
 const SUPPORTED_WEBSITE_URLS = {
