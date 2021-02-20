@@ -6,12 +6,14 @@
   "repository": "https://github.com/RafaRochaS91/effin-bot.git",
   "license": "MIT",
   "scripts": {
-    "amazon": "node src/index.js amazon",
-    "mediamarkt": "node src/index.js mediamarkt",
-    "saturn": "node src/index.js saturn"
+    "start": "docker-compose up --build",
+    "saturn": "node ./src/index.js saturn",
+    "mediamarkt": "node ./src/index.js mediamarkt"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
     "puppeteer": "^7.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }

@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import puppeteer from "puppeteer";
 
 import { SUPPORTED_WEBSITES } from "./constants.js";
 import { WebsiteNotSupported } from "./errors/WebsiteNotSupported.js";
@@ -12,15 +13,20 @@ const website = process.argv[2];
 
 (async function () {
   try {
+    const browser = await puppeteer.launch({
+      headless: false,
+      slowMo: 200,
+      args: ['--disable-setuid-sandbox', '--no-sandbox'],
+    });
     switch (website) {
       case SUPPORTED_WEBSITES.AMAZON:
-        await buyOnAmazon();
+        await buyOnAmazon(browser);
         break;
       case SUPPORTED_WEBSITES.MEDIA_MARKT:
-        await buyOnMediamarkt();
+        await buyOnMediamarkt(browser);
         break;
       case SUPPORTED_WEBSITES.SATURN:
-        await buyOnSaturn();
+        await buyOnSaturn(browser);
         break;
       default:
         throw new WebsiteNotSupported(website);

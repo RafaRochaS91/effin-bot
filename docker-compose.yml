@@ -1,0 +1,21 @@
+version: "3.4"
+
+services:
+  mediamarkt_bot:
+    network_mode: host
+    build:
+      network: host
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: "mediamarkt_bot"
+    command: bash -c "Xvfb :1 -screen 0 1024x768x16" && "npm run mediamarkt"
+
+  saturn_bot:
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: "saturn_bot"
+    command: bash -c "Xvfb :2 -screen 1 1024x768x16 && npm run saturn"

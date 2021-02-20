@@ -1,8 +1,6 @@
-import puppeteer from "puppeteer";
-
-export async function buyOnSaturn() {
+export async function buyOnSaturn(browser) {
   const accountPage = "https://www.saturn.de/de/myaccount";
-  const browser = await puppeteer.launch({ headless: false, slowMo: 200 });
+  
   const page = await browser.newPage();
 
   await page.goto(accountPage);
