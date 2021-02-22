@@ -27,8 +27,7 @@ export async function addAvailableItemsFromWishListToCart(browser) {
 
   await page.waitForTimeout(500);
 
-  const wishListPage =
-    'https://www.amazon.de/hz/wishlist/genericItemsPage/ORJV14SVR8KL?type=wishlist&_encoding=UTF8';
+  const wishListPage = process.env.AMAZON_WISHLIST_URL;
 
   await page.goto(wishListPage);
 
