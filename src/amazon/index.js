@@ -37,14 +37,6 @@ export async function addAvailableItemsFromWishListToCart(browser) {
   while (!isAnyItemAvailable) {
     await page.waitForTimeout(1000);
 
-    itemAvailableEventEmitter.emit(
-      'ITEM_AVAILABLE',
-      new ItemAvailableEvent({
-        companyName: 'Amazon',
-        url: 'https://www.amazon.de/-/en/gp/cart/view.html?ref_=nav_cart',
-      })
-    );
-
     const enabledAddToCartButtons = await page.$x("//a[contains(text(), 'In den Einkaufswagen')]");
 
     if (enabledAddToCartButtons.length > 0) {

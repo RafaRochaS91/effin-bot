@@ -6,5 +6,7 @@ itemAvailableEventEmitter.on('ITEM_AVAILABLE', function onItemAvailable(itemAvai
   console.log('😱😱😱😱😱😱 PLEASE FINALIZE THE PURCHASE! 😱😱😱😱😱😱');
   console.log(`Item from ${itemAvailableEvent.companyName} available at ${itemAvailableEvent.url}`);
 
-  blinkLights();
+  if (process.env.IS_HUE_ENABLED === 'true') {
+    blinkLights();
+  }
 });
