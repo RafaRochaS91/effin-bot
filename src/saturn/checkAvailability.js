@@ -30,7 +30,6 @@ export async function addAvailablePs5ConsolesToWishList(browser) {
 
   let areItemsAvailable = false;
   while (!areItemsAvailable) {
-    console.log('still not available');
     const addToWishListButtons = await page.$x(
       '//div[@data-test="mms-search-wishlist-icon-unselected"]'
     );
