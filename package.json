@@ -8,10 +8,16 @@
   "scripts": {
     "amazon": "node src/index.js amazon",
     "mediamarkt": "node src/index.js mediamarkt",
-    "saturn": "node src/index.js saturn"
+    "saturn": "concurrently \"npm run saturn:wishlist\" \"npm run saturn:availability\"",
+    "saturn:wishlist": "node src/index.js saturn",
+    "saturn:availability": "node src/index.js saturn_availability"
   },
   "dependencies": {
+    "concurrently": "^6.0.0",
     "dotenv": "^8.2.0",
     "puppeteer": "^7.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
