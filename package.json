@@ -6,15 +6,17 @@
   "repository": "https://github.com/RafaRochaS91/effin-bot.git",
   "license": "MIT",
   "scripts": {
+    "all": "node src/index.js amazon mediamarkt saturn saturn_availability",
     "amazon": "node src/index.js amazon",
     "mediamarkt": "node src/index.js mediamarkt",
-    "saturn": "concurrently \"npm run saturn:wishlist\" \"npm run saturn:availability\"",
+    "saturn": "node src/index.js saturn saturn_availability",
     "saturn:wishlist": "node src/index.js saturn",
     "saturn:availability": "node src/index.js saturn_availability"
   },
   "dependencies": {
     "concurrently": "^6.0.0",
     "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1",
     "puppeteer": "^7.1.0"
   },
   "devDependencies": {

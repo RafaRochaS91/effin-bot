@@ -1,5 +1,7 @@
 import puppeteer from 'puppeteer';
 
+import { itemAvailableEventEmitter, ItemAvailableEvent } from '../events/index.js';
+
 /**
  * Buys the first available item in the wish list at mediamarkt.de.
  * @param {puppeteer.Browser} browser
@@ -36,7 +38,13 @@ export async function buyAvailableItemInWishList(browser) {
     );
 
     if (enabledAddToCartButtons.length > 0) {
-      console.log(`(MM) ✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`);
+      itemAvailableEventEmitter.emit(
+        'ITEM_AVAILABLE',
+        new ItemAvailableEvent({
+          companyName: 'Media Markt',
+          url: 'https://www.mediamarkt.de/checkout/summary',
+        })
+      );
 
       isAnyItemAvailable = true;
 

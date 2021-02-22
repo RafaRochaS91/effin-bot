@@ -1,5 +1,7 @@
 import puppeteer from 'puppeteer';
 
+import { itemAvailableEventEmitter, ItemAvailableEvent } from '../events/index.js';
+
 /**
  * Adds an available item from the wish list into the cart.
  * @param {puppeteer.Browser} browser
@@ -35,10 +37,24 @@ export async function addAvailableItemsFromWishListToCart(browser) {
   while (!isAnyItemAvailable) {
     await page.waitForTimeout(1000);
 
+    itemAvailableEventEmitter.emit(
+      'ITEM_AVAILABLE',
+      new ItemAvailableEvent({
+        companyName: 'Amazon',
+        url: 'https://www.amazon.de/-/en/gp/cart/view.html?ref_=nav_cart',
+      })
+    );
+
     const enabledAddToCartButtons = await page.$x("//a[contains(text(), 'In den Einkaufswagen')]");
 
     if (enabledAddToCartButtons.length > 0) {
-      console.log(`(AMZ) ✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`);
+      itemAvailableEventEmitter.emit(
+        'ITEM_AVAILABLE',
+        new ItemAvailableEvent({
+          companyName: 'Amazon',
+          url: 'https://www.amazon.de/-/en/gp/cart/view.html?ref_=nav_cart',
+        })
+      );
 
       isAnyItemAvailable = true;
 
@@ -48,8 +64,6 @@ export async function addAvailableItemsFromWishListToCart(browser) {
       await page.goto('https://www.amazon.de/-/en/gp/cart/view.html?ref_=nav_cart', {
         waitUntil: 'networkidle0',
       });
-
-      console.log(`😱😱😱😱😱😱 PLEASE FINALIZE THE PURCHASE! 😱😱😱😱😱😱`);
     } else {
       console.log(`(AMZ) ❌ No items available ❌`);
       await page.waitForTimeout(30000);

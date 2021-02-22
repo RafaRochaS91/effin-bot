@@ -34,7 +34,13 @@ export async function buyAvailableItemInWishList(browser) {
     );
 
     if (enabledAddToCartButtons.length > 0) {
-      console.log(`(SAT) ✅✅ Available items ✅✅: ${enabledAddToCartButtons.length}`);
+      itemAvailableEventEmitter.emit(
+        'ITEM_AVAILABLE',
+        new ItemAvailableEvent({
+          companyName: 'Saturn',
+          url: 'https://www.saturn.de/checkout/summary',
+        })
+      );
 
       isAnyItemAvailable = true;
 

@@ -9,29 +9,33 @@ import * as amazon from './amazon/index.js';
 
 dotenv.config();
 
-const website = process.argv[2];
+const [, , ...websites] = process.argv;
+
+const websitesMap = {
+  [SUPPORTED_WEBSITES.AMAZON]: amazon.addAvailableItemsFromWishListToCart,
+  [SUPPORTED_WEBSITES.MEDIA_MARKT]: mediamarkt.buyAvailableItemInWishList,
+  [SUPPORTED_WEBSITES.SATURN_AVAILABILITY]: saturn.addAvailablePs5ConsolesToWishList,
+  [SUPPORTED_WEBSITES.SATURN]: saturn.buyAvailableItemInWishList,
+};
 
 (async function () {
-  const browser = await puppeteer.launch({ headless: false, slowMo: 50 });
-
-  try {
-    switch (website) {
-      case SUPPORTED_WEBSITES.AMAZON:
-        await amazon.addAvailableItemsFromWishListToCart(browser);
-        break;
-      case SUPPORTED_WEBSITES.MEDIA_MARKT:
-        await mediamarkt.buyAvailableItemInWishList(browser);
-        break;
-      case SUPPORTED_WEBSITES.SATURN_AVAILABILITY:
-        await saturn.addAvailablePs5ConsolesToWishList(browser);
-        break;
-      case SUPPORTED_WEBSITES.SATURN:
-        await saturn.buyAvailableItemInWishList(browser);
-        break;
-      default:
-        throw new WebsiteNotSupported(website);
+  if (websites.length) {
+    const buyFunctions = [];
+    for (const website of websites) {
+      if (websitesMap[website]) {
+        buyFunctions.push(websitesMap[website]);
+      } else {
+        console.log(new WebsiteNotSupported(website));
+        process.exit(1);
+      }
     }
-  } catch (error) {
-    console.error(error.message);
+
+    if (buyFunctions.length) {
+      const browser = await puppeteer.launch({ headless: false, slowMo: 50 });
+
+      for (const functionToCall of buyFunctions) {
+        functionToCall(browser);
+      }
+    }
   }
 })();
