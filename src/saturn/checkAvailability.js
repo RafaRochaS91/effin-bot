@@ -26,8 +26,11 @@ export async function checkIfSaturnHasConsole(browser) {
   await page.click('#mms-login-form__login-button');
   await page.waitForSelector('#mms-login-form__login-button', { hidden: true });
 
-  // add the var test here if you wanna test with ps4 konsolen category
-  await page.goto(test);
+  /**
+   * add the var test here if you wanna test with ps4 konsolen category
+   * BE VERY CAREFUL, DONT HAVE THE OTHER SCRIPT THAT BUYS RUNNING OR ELSE YOU WILL BUY A SHIT TON OF PS4'S
+   * */
+  await page.goto(playstation5CategoryUrl);
 
   let areItemsAvailable = false;
 
@@ -41,15 +44,22 @@ export async function checkIfSaturnHasConsole(browser) {
       areItemsAvailable = false;
     }
 
+    for (const element of elements) {
+      const [clickableElement] = await element.$x(
+        '//div[@data-test="mms-search-wishlist-icon-unselected"]'
+      );
+
+      await clickableElement.click();
+    }
+
     if (areItemsAvailable) {
       console.log('(SAT) ✅✅ Available items in the PS5 Category List ✅✅');
-      
+
+      // add sms notification with url to manually check the item
     } else {
       console.log(`(SAT) ❌ No items available from PS5 Category List ❌`);
       await page.waitForTimeout(30000);
       await page.reload({ waitUntil: 'load' });
     }
   }
-
-  await page.screenshot({ path: 'ps5-category.jpg', fullPage: true });
 }
