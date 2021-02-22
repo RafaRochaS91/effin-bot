@@ -1,13 +1,13 @@
 import puppeteer from 'puppeteer';
 
-const playstation5CategoryUrl = 'https://www.saturn.de/de/category/_ps5-konsolen-769029.html';
-const test = 'https://www.saturn.de/de/category/_ps4-konsolen-457550.html';
+// const CAREFUL_PS4_CATEGORY_URL = 'https://www.saturn.de/de/category/_ps4-konsolen-457550.html';
+const PS5_CATEGORY_URL = 'https://www.saturn.de/de/category/_ps5-konsolen-769029.html';
 
 /**
- * Finds PS5 bundles from search in Saturn.
+ * Finds PS5 bundles from search in Saturn and add them to the Wish List.
  * @param {puppeteer.Browser} browser
  */
-export async function checkIfSaturnHasConsole(browser) {
+export async function addAvailablePs5ConsolesToWishList(browser) {
   const accountPage = 'https://www.saturn.de/de/myaccount';
   const page = await browser.newPage();
 
@@ -26,36 +26,22 @@ export async function checkIfSaturnHasConsole(browser) {
   await page.click('#mms-login-form__login-button');
   await page.waitForSelector('#mms-login-form__login-button', { hidden: true });
 
-  /**
-   * add the var test here if you wanna test with ps4 konsolen category
-   * BE VERY CAREFUL, DONT HAVE THE OTHER SCRIPT THAT BUYS RUNNING OR ELSE YOU WILL BUY A SHIT TON OF PS4'S
-   * */
-  await page.goto(playstation5CategoryUrl);
+  await page.goto(PS5_CATEGORY_URL);
 
   let areItemsAvailable = false;
-
   while (!areItemsAvailable) {
-    const productListItemSelector = '[data-test="mms-search-srp-productlist-item"]';
+    console.log('still not available');
+    const addToWishListButtons = await page.$x(
+      '//div[@data-test="mms-search-wishlist-icon-unselected"]'
+    );
 
-    const elements = await page.$$(productListItemSelector);
-    if (elements.length) {
+    if (addToWishListButtons && addToWishListButtons.length) {
       areItemsAvailable = true;
-    } else {
-      areItemsAvailable = false;
-    }
-
-    for (const element of elements) {
-      const [clickableElement] = await element.$x(
-        '//div[@data-test="mms-search-wishlist-icon-unselected"]'
-      );
-
-      await clickableElement.click();
-    }
-
-    if (areItemsAvailable) {
       console.log('(SAT) ✅✅ Available items in the PS5 Category List ✅✅');
 
-      // add sms notification with url to manually check the item
+      for (const addToWishListButton of addToWishListButtons) {
+        await addToWishListButton.click();
+      }
     } else {
       console.log(`(SAT) ❌ No items available from PS5 Category List ❌`);
       await page.waitForTimeout(30000);

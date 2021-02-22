@@ -1,2 +1,3 @@
-export { buyFromSaturnWishList } from './buyFromWishlist.js';
-export { checkIfSaturnHasConsole } from './checkAvailability.js';
+export { buyAvailableItemInWishList as buyFromSaturnWishList } from './buyFromWishlist.js';
+export { buyAvailableItemInWishList } from './buyFromWishlist.js';
+export { addAvailablePs5ConsolesToWishList } from './checkAvailability.js';
