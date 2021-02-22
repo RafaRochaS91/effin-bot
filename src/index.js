@@ -3,8 +3,8 @@ import puppeteer from 'puppeteer';
 
 import { SUPPORTED_WEBSITES } from "./constants.js";
 import { WebsiteNotSupported } from "./errors/WebsiteNotSupported.js";
-import { buyOnSaturn } from "./saturn/index.js";
-import { buyBundleOnSaturn } from './saturn/bundle.js';
+import { buyFromSaturnWishList } from "./saturn/index.js";
+import { checkIfSaturnHasConsole } from './saturn/checkAvailability.js';
 import { buyOnMediamarkt } from "./media-markt/index.js";
 import { buyOnAmazon } from "./amazon/index.js";
 
@@ -22,11 +22,11 @@ const website = process.argv[2];
       case SUPPORTED_WEBSITES.MEDIA_MARKT:
         await buyOnMediamarkt();
         break;
-      case SUPPORTED_WEBSITES.SATURN_BUNDLE:
-        await buyBundleOnSaturn(browser);
+      case SUPPORTED_WEBSITES.SATURN_AVAILABILITY:
+        await checkIfSaturnHasConsole(browser);
         break;
       case SUPPORTED_WEBSITES.SATURN:
-        await buyOnSaturn();
+        await buyFromSaturnWishList(browser);
         break;
       default:
         throw new WebsiteNotSupported(website);
